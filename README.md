@@ -37,7 +37,7 @@ Install package dependencies by running.
 Once you have the environmet set up, you will need to start Webdriver-Manager then Run the protractor tests.
 Open the terminal and follow the instructions
 ```
-cd path-directory/academy-qa-workshop
+
 webdriver-manager update && webdriver-manager start
 protractor confs/conf.js
 ```

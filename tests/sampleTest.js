@@ -1,25 +1,30 @@
-var uuid = require("uuid/v1")
-var email = 'test@' + uuid() + 'gmail.com';
+var page = require('../page_objects/page')
+var homePage = require('../page_objects/homePage')
+var authPage = require('../page_objects/authenticationPage')
+var accountPage = require('../page_objects/createAccountPage')
+var data = require('../test_data/data')
 
-describe("SignIn into the Site", function() {
-    it("Navigate to user registration", function() {
-        browser.get('http://automationpractice.com/index.php');
-        element(by.xpath('//*[@id="header"]/div[2]/div/div/nav/div[1]/a'))
-        element(by.css('.login')).click()
-        browser.sleep(6000);
-        element(by.xpath('//*[@id="email_create"]')).sendKeys(email);
-        element(by.css('#SubmitCreate')).click();
-        browser.sleep(6000);
-        expect(element(by.xpath('//*[@id="customer_firstname"]')).isPresent()).toBe(true);
-    });
+beforeAll(function () {
+  page.openUrl()
+})
 
-    it("User Registration", function() {
-        browser.sleep(3000);
-        element(by.xpath('//*[@id="id_gender1"]')).click()
-        browser.sleep(3000);
-        element(by.xpath('//*[@id="customer_firstname"]')).sendKeys('firstName');
-        browser.sleep(3000);
-        element(by.xpath('//*[@id="customer_lastname"]')).sendKeys('lastName');
-        expect(element(by.id('email')).getText()).toBe(email)
-    });
-});
+describe('User should be able to create a New Account when using valid data.', function () {
+  it('User should be able to navigate to Create Account page when using valid email', function () {
+    homePage.clickOnSignInButton()
+    authPage.enterEmailForRegistration(data.email)
+        // Assert Create Account Fields..
+    expect(accountPage.verifyRegistrationItemsAreDisplayed()).toBeTruthy()
+  })
+
+  it('Firstname & Lastname from "Personal Information" should be auto populated on "Address" section', function () {
+        // Fill personal information with test data.
+    accountPage.fillPersonalInformation(data.personalInfo)
+
+        // Validate the Email field equals to email used for registration.
+    expect(accountPage.getValue(accountPage.emailField)).toEqual(data.email)
+
+        // Validate FirstName and LastName used on Personal Information is auto populated on "Address" section
+    expect(accountPage.getValue(accountPage.addressFirstNameField)).toEqual(data.personalInfo.firstName)
+    expect(accountPage.getValue(accountPage.addressLastNameField)).toEqual(data.personalInfo.lastName)
+  })
+})
