@@ -6,7 +6,7 @@ Repository created for the fundamentals of Test Automation
 * Objects Locators best practices
 * Define Page Models
 * Usage Page Object Pattern 
-* Autoamted test execution
+* Automated test execution
 
 
 # Getting Started
